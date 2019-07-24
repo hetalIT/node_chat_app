@@ -16,10 +16,20 @@ app.use(express.static(publicPath));
 
 io.on("connection",socket=>{
     console.log("New User Connected");
-    socket.on("disconnect",()=>{
+    socket.on("disconnect",function(){
         console.log("client disconnected");
     });
+
+    socket.emit("newMessage",{
+        from:"hetal",
+        text:"good morning",
+        createdAt:123
+    });
+
+    socket.on("createMessage",message=>{
+        console.log("created message",message);
+    });
 });
-server.listen(port,()=>{
+server.listen(port,function(){
     console.log(`server is up on port ${port}`);
 });
