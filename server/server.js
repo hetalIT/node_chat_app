@@ -19,15 +19,13 @@ io.on("connection",socket=>{
     socket.on("disconnect",function(){
         console.log("client disconnected");
     });
-
-    socket.emit("newMessage",{
-        from:"hetal",
-        text:"good morning",
-        createdAt:123
-    });
-
     socket.on("createMessage",message=>{
         console.log("created message",message);
+        io.emit("newMessage",{
+            from:message.from,
+            text:message.text,
+            createdAt:new Date().getTime()
+        });
     });
 });
 server.listen(port,function(){
