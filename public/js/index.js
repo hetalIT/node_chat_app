@@ -13,3 +13,11 @@ socket.on("disconnect",()=>{
 socket.on("newMessage",function(message){
     console.log("got message",message);
 });
+
+socket.on("greetings",function(greet){
+    console.log("Admin:",greet);
+});
+
+socket.on("newUser",function(data){
+    console.log("Admin says",data);
+});
