@@ -20,11 +20,13 @@ io.on("connection",socket=>{
     socket.on("disconnect",function(){
         console.log("client disconnected");
     });
-    socket.emit("greetings",generateMessage("admin","Welcome to the chat app"));
-    socket.broadcast.emit("newUser",generateMessage("admin","new user joined"));
-    socket.on("createMessage",message=>{
+    socket.emit("newMessage",generateMessage("admin","Welcome to the chat app"));
+    socket.broadcast.emit("newMessage",generateMessage("admin","new user joined"));
+
+    socket.on("createMessage",(message,callback)=>{
         console.log("created message",message);
         io.emit("newMessage",generateMessage(message.from,message.text));
+        callback("this is from the server");
         // socket.broadcast.emit("newMessage",{
         //     from:message.from,
         //     text:message.text,
