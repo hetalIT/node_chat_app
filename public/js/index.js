@@ -1,3 +1,5 @@
+//const moment = require("moment");
+
 var socket=io();
 socket.on("connect",()=>{
     console.log("connected to the server");
@@ -8,13 +10,15 @@ socket.on("disconnect",()=>{
 
 socket.on("newMessage",function(message){
     // console.log("got message",message);
-    jQuery("#messages").prepend(`<li><span style='font-weight:bold;'>${message.from}:</span> ${message.text}</li>`);
+    var formattedTime=moment().format('h:mm a');
+    jQuery("#messages").prepend(`<li><span style='font-weight:bold;'>${message.from} ${formattedTime}:</span> ${message.text}</li>`);
 });
 
 socket.on("newLocationMessage",function(message){
+    var foemattedTime=moment().format('h:mm a');
     var li=jQuery("<li></li>");
     var a=jQuery('<a target="_blank">My current location</a>');
-    li.html(`<span style='font-weight:bold;'>${message.from}:</span>  `);
+    li.html(`<span style='font-weight:bold;'>${message.from} ${foemattedTime}:</span>  `);
     a.attr("href",message.url);
     li.append(a);
     jQuery('#messages').prepend(li);
