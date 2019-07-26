@@ -41,8 +41,10 @@ io.on("connection",socket=>{
 
     socket.on("createMessage",(message,callback)=>{
         console.log("created message",message);
-
-        io.emit("newMessage",generateMessage(message.from,message.text));
+        var user=users.getUser(socket.id)[0];
+        //console.log(user);
+        if(user && isRealString(message.text))
+             io.to(user.room).emit("newMessage",generateMessage(user.name,message.text));
         callback();
         // socket.broadcast.emit("newMessage",{
         //     from:message.from,
@@ -52,7 +54,9 @@ io.on("connection",socket=>{
     });
 
     socket.on('createLocationMessage',coord=>{
-        io.emit('newLocationMessage',generateLocationMessage("admin",coord.latitude,coord.longitude));
+        var user=users.getUser(socket.id)[0];
+        if(user)
+            io.to(user.room).emit('newLocationMessage',generateLocationMessage(user.name,coord.latitude,coord.longitude));
     });
 });
 server.listen(port,function(){
